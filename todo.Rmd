@@ -1,0 +1,20 @@
+---
+title: "ToDo"
+author: "Daniel Forcade"
+date: "2/21/2021"
+output: pdf_document
+---
+
+## 1. Assets  
+* Finish static image bank
+  - Resize images
+  - Homework box dimensions: 576 x 515
+  - Fix resolution of old images
+  
+* Build second rtransition for site
+  - Generate assets two-state
+  - Test triple state
+  
+* Build out Projects/Resources html
+  - Create workflow/structure for project demonstration
+  - Log project sequentially
