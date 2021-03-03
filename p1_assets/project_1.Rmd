@@ -23,7 +23,7 @@ https://jekyllthemes.io/github-pages-themes
 > Note: The pages for many of the themes are in html.
 
 ## Step 2  
-* All the (free) themes have a `Get ____ on Github` **(blue)**
+* All the (free) themes have a `Get ____ on Github`. <span style="color:blue">**(blue)**</span>
   + Click this and it will take you to the theme Github page.
   
 ![2.1](proj1_1.png)  
@@ -42,7 +42,7 @@ https://jekyllthemes.io/github-pages-themes
 ## Step 4 
 * After you have read the readme, go back to the repository page. `4.1`
   + This time, click the fork icon in the upper right corner.  This creates a clone of the repo in your github. `4.1` <span style="color:red">**(red)**</span>  
-    + If forked successfully, you will see the new "forked" repo on your homepage.  Mine is displayed here in both recent and the front page.`4.2` <span style="color:orange">**(orange)**</span> and <span style="color:lightblue">**(light blue)**</span>
+    + If forked successfully, you will see the new "forked" repo on your homepage.  Mine is displayed here in both recent and the front page. `4.2` <span style="color:orange">**(orange)**</span> and <span style="color:lightblue">**(light blue)**</span>
   
 ![4.1](proj1_2.jpg)
 
@@ -51,15 +51,15 @@ https://jekyllthemes.io/github-pages-themes
 ## Step 5  
 * Click on the new "forked" repository.  
   + The readme said a new branch called `gh-pages` is needed for this theme:
-    1. Click branches `5.1` <span style="color:red">**(red)**</span>  
-    2. Input gh-pages into the drop down prompt `5.1` <span style="color:purple">**(purple)**</span>  
-    3. Create new branch `5.1` <span style="color:gold">**yellow**</span> 
+    1. Click branches. `5.1` <span style="color:red">**(red)**</span>  
+    2. Input gh-pages into the drop down prompt. `5.1` <span style="color:purple">**(purple)**</span>  
+    3. Create new branch. `5.1` <span style="color:gold">**yellow**</span> 
 
 ![5.1](proj1_5.jpg)  
   
 ## Step 6  
 * On the new `gh-pages` branch, there should be two important files:  
-  1. The _config.yml `6.1` <span style="color:brown">**brown**</span>  
+  1. The _config.yml. `6.1` <span style="color:brown">**brown**</span>  
       + This may have important wholesale quick-edit applications, depending on your theme.  
 <br />  
 
@@ -72,7 +72,7 @@ https://jekyllthemes.io/github-pages-themes
   
 ## Step 7
 * In image `7.1` I have pulled my repo from github into R and am on my own index.html page.  
-  + Make sure you are in the correct branch (gh-pages, in this case)
+  + Make sure you are in the correct branch (gh-pages, in this case).
     + `git checkout` in the R Studio terminal will allow you to select the branch.  
       + For example, here it would be `git checkout gh-pages`.  
 <br />  
