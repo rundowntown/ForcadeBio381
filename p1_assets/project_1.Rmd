@@ -55,6 +55,8 @@ https://jekyllthemes.io/github-pages-themes
     2. Input gh-pages into the drop down prompt. `5.1` <span style="color:purple">**(purple)**</span>  
     3. Create new branch. `5.1` <span style="color:gold">**yellow**</span> 
 
+> Note: Some forks come with gh-pages (or whichever branch) already included.  
+
 ![5.1](proj1_5.jpg)  
   
 ## Step 6  
@@ -68,7 +70,7 @@ https://jekyllthemes.io/github-pages-themes
       + Github reads and launches this as your homepage for the repository.
       + Changes made here will change the homepage.
 
-![](proj1_6.jpg)  
+![6.1](proj1_6.jpg)  
   
 ## Step 7
 * In image `7.1` I have pulled my repo from github into R and am on my own index.html page.  
