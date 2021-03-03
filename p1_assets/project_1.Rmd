@@ -97,5 +97,11 @@ https://jekyllthemes.io/github-pages-themes
 ![E.1](proj1_8.jpg)
 
 
+## Reminder: Change Source!
+* Make sure to change the display branch in the repository to the created branch.
+  + Go to settings in the upper right of your repository. `R.1` <span style="color:pink">**(pink)**</span>  
+  + In settings, scroll down to change `Source` to `gh-pages`. `R.2` <span style="color:lightblue">**(light blue)**</span> 
+  
+![R.1](proj1_9.jpg)  
 
-
+![R.2](proj1_10.jpg)
