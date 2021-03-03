@@ -1,58 +1,101 @@
 ---
-title: "testhhhhhhhh"
+title: "Project_1: Site Creation"
 author: "Daniel Forcade"
 date: "3/3/2021"
-output:
-  html_document:
-    df_print: paged
-  rmdformats::downcute:
-    self_contained: yes
-    thumbnails: yes
-    lightbox: yes
-    gallery: no
-    highlight: tango
+output:   
+  rmdformats::readthedown:
+  self_contained: true
+thumbnails: true
+lightbox: true
+gallery: false
+highlight: tango
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Step 1  
+* I used a Jekyll Theme, many free ones can be found here:  
+
+https://jekyllthemes.io/github-pages-themes
+
+> Note: The pages for many of the themes are in html.
+
+## Step 2  
+* All the (free) themes have a `Get ____ on Github` **(blue)**
+  + Click this and it will take you to the theme Github page.
+  
+![2.1](proj1_1.png)  
+  
+## Step 3  
+* Once on the theme Github page look for the readme file. `3.1` <span style="color:green">**(green)**</span>: 
+  + In the readme, look for the **github** installation section. `3.2` <span style="color:green">**(green)**</span> 
+    + Here, the instructions are shown (fork and create a gh-pages branch). `3.2` <span style="color:lightblue">**(light blue)**</span>
+    
+> *Note* different themes may have different specific parameters (as found in the respective readme)
+  
+![3.1](proj1_2.jpg)  
+
+![3.2](proj1_3.jpg)  
+  
+## Step 4 
+* After you have read the readme, go back to the repository page. `4.1`
+  + This time, click the fork icon in the upper right corner.  This creates a clone of the repo in your github. `4.1` <span style="color:red">**(red)**</span>  
+    + If forked successfully, you will see the new "forked" repo on your homepage.  Mine is displayed here in both recent and the front page.`4.2` <span style="color:orange">**(orange)**</span> and <span style="color:lightblue">**(light blue)**</span>
+  
+![4.1](proj1_2.jpg)
+
+![4.2](proj1_4.jpg)  
+  
+## Step 5  
+* Click on the new "forked" repository.  
+  + The readme said a new branch called `gh-pages` is needed for this theme:
+    1. Click branches `5.1` <span style="color:red">**(red)**</span>  
+    2. Input gh-pages into the drop down prompt `5.1` <span style="color:purple">**(purple)**</span>  
+    3. Create new branch `5.1` <span style="color:gold">**yellow**</span> 
+
+![5.1](proj1_5.jpg)  
+  
+## Step 6  
+* On the new `gh-pages` branch, there should be two important files:  
+  1. The _config.yml `6.1` <span style="color:brown">**brown**</span>  
+      + This may have important wholesale quick-edit applications, depending on your theme.  
+<br />  
+
+  2. The index.html (which is the homepage). `6.1` <span style="color:red">**red**</span>  
+      + This executes similarly to the default index.html for the course.  
+      + Github reads and launches this as your homepage for the repository.
+      + Changes made here will change the homepage.
+
+![](proj1_6.jpg)  
+  
+## Step 7
+* In image `7.1` I have pulled my repo from github into R and am on my own index.html page.  
+  + Make sure you are in the correct branch (gh-pages, in this case)
+    + `git checkout` in the R Studio terminal will allow you to select the branch.  
+      + For example, here it would be `git checkout gh-pages`.  
+<br />  
+* I have circled a section of my index.html `7.1` <span style="color:green">**green**</span>  
+  + The `href="/ForcadeBio381/homework.html"` is a html hyperlink attached to an image `<img src="onehouse.jpg"` on my index.  
+    + Editing the `href` will change the hyperlink output, so you can forward to further .html pages you create.  
+    + Editing the `<img/>` will change the picture. 
+    
+> Note: Assets (pictures, gifs, .html) you want to use (and reference/call) should be uploaded into the respository (`git push`)
+
+![7.1](proj1_7.jpg)  
 
 
-!(p1_assets/proj1_1.png)
+## Step 7: Example: 
+* `E.1` is an example of a plain rmarkdown for Homework 3 that is included on my repo.  <span style="color:Orange">**(orange)**</span>  
+  + I knit Homework3plain.rmd into Homework3plain.html in R Studio.  
+  + I then made sure both folders were in the correct branch (`gh-pages`) and ran a `git push` sequence.  
+  <br />  
+  
+* From here, I just need to change `href="/ForcadeBio381/homework.html"` shown in Step 7 into `href="/ForcadeBio381/Homework3plain.html"` to have Homework3plain.html linked instead.
 
-!(p1_assets/proj1_2.jpg)
-
-![](/p1_assets/proj1_3.jpg)
-
-![](/p1_assets/proj1_4.jpg)
-
-![](/p1_assets/proj1_5.jpg)
-
-![](/p1_assets/proj1_6.jpg)
-
-![](/p1_assets/proj1_7.jpg)
-
-![](/p1_assets/proj1_8.jpg)
+![E.1](proj1_8.jpg)
 
 
 
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
