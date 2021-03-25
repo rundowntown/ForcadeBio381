@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.3.11)  16 MAR 2021 23:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020/W32TeX) (preloaded format=pdflatex 2021.3.19)  25 MAR 2021 08:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -7,7 +7,7 @@ entering extended mode
 LaTeX2e <2020-10-01> patch level 4
 L3 programming layer <2021-02-18>
 (c:/Users/dforc/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/beamer/beamer.cls
-Document Class: beamer 2021/02/09 v3.61 A class for typesetting presentations
+Document Class: beamer 2021/03/19 v3.62 A class for typesetting presentations
 
 (c:/Users/dforc/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/beamer/beamerbasem
 odes.sty
@@ -801,7 +801,7 @@ themewhale.sty))
 themecrane.sty)
 (c:/Users/dforc/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backen
 d-pdftex.def
-File: l3backend-pdftex.def 2021-03-02 L3 backend support: PDF output (pdfTeX)
+File: l3backend-pdftex.def 2021-03-18 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count326
 \l__pdf_internal_box=\box72
 ) (./beamer_1.aux)
@@ -1013,13 +1013,13 @@ LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <12> not available
 (Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 8.
 
 Overfull \hbox (143.48535pt too wide) in paragraph at lines 13--13
-[]\OT1/cmtt/m/n/12 ##  [1] 0.13279632 0.15808441 0.79218866 0.22428359 0.846027
-19 0.04939383[] 
+[]\OT1/cmtt/m/n/12 ##  [1] 0.55942692 0.40704284 0.63358279 0.98718279 0.087713
+73 0.84916881[] 
  []
 
 
 Overfull \hbox (7.63528pt too wide) in paragraph at lines 13--13
-[]\OT1/cmtt/m/n/12 ##  [7] 0.10616781 0.33116594 0.61229214 0.20378845[] 
+[]\OT1/cmtt/m/n/12 ##  [7] 0.35313850 0.68884205 0.03986780 0.02372756[] 
  []
 
 ) [11
@@ -1062,10 +1062,10 @@ Package rerunfilecheck Info: File `beamer_1.out' has not changed.
 (rerunfilecheck)             Checksum: 0FF89E7BCEA4A88526528588E157D934;377.
  ) 
 Here is how much of TeX's memory you used:
- 20584 strings out of 481009
- 391239 string characters out of 5907783
- 682183 words of memory out of 5000000
- 37267 multiletter control sequences out of 15000+600000
+ 20585 strings out of 481008
+ 391250 string characters out of 5907772
+ 682297 words of memory out of 5000000
+ 37269 multiletter control sequences out of 15000+600000
  411460 words of font info for 57 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  112i,19n,116p,483b,818s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1080,7 +1080,7 @@ bx10.pfb><c:/Users/dforc/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/
 amsfonts/cm/cmssi12.pfb><c:/Users/dforc/AppData/Roaming/TinyTeX/texmf-dist/font
 s/type1/public/amsfonts/cm/cmssi8.pfb><c:/Users/dforc/AppData/Roaming/TinyTeX/t
 exmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb>
-Output written on beamer_1.pdf (16 pages, 453614 bytes).
+Output written on beamer_1.pdf (16 pages, 453678 bytes).
 PDF statistics:
  645 PDF objects out of 1000 (max. 8388607)
  551 compressed objects within 6 object streams
