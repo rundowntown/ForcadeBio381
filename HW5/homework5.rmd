@@ -1,0 +1,142 @@
+---
+title: "HW_5"
+author: "Daniel Forcade"
+date: "3/25/2021"
+output:   
+  rmdformats::readthedown:
+  self_contained: true
+thumbnails: true
+lightbox: true
+gallery: false
+highlight: tango
+---
+
+## 1.  
+
+```{r 1}
+x <- 1.1
+a <- 2.2
+b <- 3.3
+```  
+
+
+#### 1a.  
+```{r}
+z <- x^a^b
+print(z)
+```  
+
+
+#### 1b.  
+```{r}
+z <- (x^a)^b
+print(z)
+```  
+
+#### 1c.  
+```{r}
+z <- (3*x^3) + (2*x^2) + 1
+print(z)
+```  
+
+## 2.  
+
+#### 2a.  
+
+```{r}
+a <- c(seq(from = 1, to = 8), seq(from = 7, to = 1))
+a
+```  
+
+#### 2b.  
+
+```{r}
+b_vec <- c(1,2,3,4,5)
+b <- rep(x = b_vec, times = b_vec)
+b
+```  
+
+#### 2c.  
+
+```{r}
+c_vec_inc <- c(1,2,3,4,5)
+c_vec_decr <- c(5,4,3,2,1)
+c <- rep(x = c_vec_decr, times = c_vec_inc)
+c
+```  
+
+## 3.  
+
+```{r}
+set.seed(50)
+quest_3 <- runif(2)
+r = sqrt(quest_3[1]^2 + quest_3[2]^2)
+theta = atan(quest_3[2]/quest_3[1])
+
+polar <- c(r, theta)
+polar
+```  
+
+## 4.  
+
+```{r}
+queue <- c("sheep", "fox", "owl", "ant")
+```  
+
+```{r 4a}
+##a. 
+queue <- c(queue, "serpent")
+queue
+```  
+
+```{r 4b}
+##b. 
+queue <- queue[-1]
+queue
+```  
+
+```{r 4c}
+##c.
+queue <- c("donkey", queue)
+queue
+```
+
+```{r 4d}
+##d.
+queue <- queue[-5]
+queue
+```
+
+```{r 4e}
+##e.
+queue <- queue[-3]
+queue
+```
+
+```{r 4f}
+##f.
+queue <- c(queue[1:2], "aphid", queue[3])
+queue
+```
+
+```{r 4g}
+##g.
+which(queue == "aphid")
+```  
+
+## 5.  
+
+```{r 5}
+## value pre-load
+not_div <- c()
+
+## For loop sets range
+for (i in 1:100) {
+  ## if block builds vector automatically based on parameters
+  if (i %% 2 != 0 & i %% 3 != 0 & i %% 7 != 0) {
+    ## new vector added when if-condition met
+    not_div <- c(not_div, i)
+  }}
+    
+not_div
+```
