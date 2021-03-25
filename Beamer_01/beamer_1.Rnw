@@ -73,19 +73,18 @@ University of Vermont \\ % Your institution for the title page
 \end{frame}
 
 % OPTIONAL SECTION HEADERS-----------------
-\section{First Section} % Sections can be created in order to organize your presentation into discrete blocks; all sections and subsections are automatically printed in the table of contents as an overview of the talk
+\section{Beamer} % Sections can be created in order to organize your presentation into discrete blocks; all sections and subsections are automatically printed in the table of contents as an overview of the talk
 
-\subsection{Subsection Example} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
+\subsection{seems to need a lot of coding to wrangle into submission} % A subsection can be created just before a set of slides with a common theme to further break down your presentation into chunks
 
 % SLIDE (BULLET POINTS)--------------------
 \begin{frame}
 \frametitle{Bullet Points}
 \begin{itemize}
-\item first item
-\item second item
-\item third item
-\item et cetera
-\item last item
+\item hola
+\item amigo
+\item mi nombre es
+\item punto de bala
 \end{itemize}
 \end{frame}
 
@@ -93,9 +92,9 @@ University of Vermont \\ % Your institution for the title page
 \begin{frame}
 \frametitle{Sequential Bullet Points}
 \begin{itemize}
-\item<1-> Text visible on first slide
-\item<2-> Text visible on second slide
-\item<3-> Text visible on third slide
+\item<1-> Incredible
+\item<2-> Suspenseful
+\item<3-> Sequential Bullet Point Madness
 \end{itemize}
 \end{frame}
 
@@ -115,14 +114,14 @@ University of Vermont \\ % Your institution for the title page
 \begin{table}
 \begin{tabular}{l l l}
 \toprule
-\textbf{Treatments} & \textbf{Response 1} & \textbf{Response 2}\\
+\textbf{Do the Buffalo Roam?} & \textbf{Yes} & \textbf{No}\\
 \midrule
-Treatment 1 & 0.0003262 & 0.562 \\
-Treatment 2 & 0.0015681 & 0.910 \\
-Treatment 3 & 0.0009271 & 0.296 \\
+In Vermont &  &  X \\
+In a Train &  &  X \\
+On top of a Plane &  X &  \\
 \bottomrule
 \end{tabular}
-\caption{Table caption}
+\caption{Buffalo Statistics}
 \end{table}
 \end{frame}
 
@@ -139,17 +138,22 @@ Sed diam enim, sagittis nec condimentum sit amet, ullamcorper sit amet libero. A
 
 % SLIDE (BLOCKS OF HIGHLIGHTED TEXT)-------
 \begin{frame}
-\frametitle{Blocks of Highlighted Text}
-\begin{block}{Block 1}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ultricies in feugiat rutrum, porttitor sit amet augue. Aliquam ut tortor mauris. Sed volutpat ante purus, quis accumsan dolor.
+\frametitle{Block Party}
+\begin{block}{Would you like them here or there?}
+I would not like them here or there.
+I would not like them anywhere.
 \end{block}
 
-\begin{block}{Block 2}
-Pellentesque sed tellus purus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Vestibulum quis magna at risus dictum tempor eu vitae velit.
+\begin{block}{Would you like them in a house?
+Would you like them with a mouse?}
+I do not like them in a house.
+I do not like them with a mouse.
 \end{block}
 
-\begin{block}{Block 3}
-Suspendisse tincidunt sagittis gravida. Curabitur condimentum, enim sed venenatis rutrum, ipsum neque consectetur orci, sed blandit justo nisi ac lacus.
+\begin{block}{Would you eat them in a box?
+Would you eat them with a fox?}
+Not in a box. Not with a fox.
+Not in a house. Not with a mouse.
 \end{block}
 \end{frame}
 
@@ -158,8 +162,9 @@ Suspendisse tincidunt sagittis gravida. Curabitur condimentum, enim sed venenati
 \begin{block}
 
 <<>>=
-# show some output...
-runif(10)
+x <- 5
+y <- 10
+x/y
 @
 
 \end{block}
@@ -171,7 +176,7 @@ runif(10)
 
 <<fig.align='center',fig.dim=c(2.5,2.5),echo=FALSE>>=
 # limited space for output
-plot(runif(10))
+plot(runif(20))
 @
 
 %\end{block}
@@ -200,8 +205,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer lectus nisl, ul
 % SLIDE (THEOREM)----------------------------
 \begin{frame}
 \frametitle{Theorem}
-\begin{theorem}[Mass--energy equivalence]
-$E = mc^2$
+\begin{theorem}[You may like them.  You will see]
+You may like them in a tree!
 \end{theorem}
 \end{frame}
 
