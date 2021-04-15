@@ -1,0 +1,251 @@
+---
+title: "Homework 6"
+author: "Daniel Forcade"
+date: "4/2/2021"
+output:   
+  rmdformats::readthedown:
+  self_contained: true
+thumbnails: true
+lightbox: true
+gallery: false
+highlight: tango
+---
+
+## 1.    
+
+```{r 1}
+# Assign to the variable n_dims a single random integer between 3 and 10.
+
+n_dims <- as.integer(runif(1, 3, 10))
+
+n_dims
+
+```  
+
+
+```{r 2}
+# Create a vector of consecutive integers from 1 to n_dims2.
+
+myvec <- 1:(n_dims^2)
+
+myvec
+```  
+
+
+```{r 3}
+# Use the sample function to randomly reshuffle these values.
+
+mysamp <- sample(myvec)
+
+mysamp
+```  
+
+```{r 4}
+# create a square matrix with these elements.
+
+mymatrix <- matrix(data = mysamp, ncol = n_dims)
+
+# print out the matrix.  
+
+mymatrix
+```
+
+```{r 5}
+# find a function in r to transpose the matrix.
+
+trans <- t(mymatrix)
+
+# print it out again and note how it has changed.
+trans
+```  
+
+```{r 6}
+
+# calculate the sum and the mean of the elements in the first row and the last row.
+
+## Access row check
+firstrow <- trans[1,]
+firstrow
+
+## Sum Row 1
+firstsum <- sum(trans[1,])
+firstsum
+
+## set length for rerun, won't matter if dimensions change
+lastlength <- length(trans[1,])
+lastlength
+
+lastrow <-trans[lastlength,]
+lastrow
+
+lastsum <- sum(trans[lastlength,])
+lastsum
+
+mean(firstrow)
+mean(lastrow)
+
+```  
+
+```{r 7}
+# read about the eigen() function and use it on your matrix
+
+myeigen <- eigen(trans)
+
+# look carefully at the elements of $values and $vectors. What kind of numbers are these?
+
+# values
+eigenval <- myeigen$values
+eigenval
+
+#vectors
+eigenvec <- myeigen$vectors
+eigenvec
+
+```   
+
+```{r 8}
+# dig in with the typeof() function to figure out their type.
+
+typeof(eigenval)
+
+typeof(eigenvec)
+
+```  
+
+## 2.  
+
+### Create a list with the following named elements:
+
+```{r 9}
+
+# my_matrix, which is a 4 x 4 matrix filled with random uniform values
+
+my_matrix <- matrix(data = as.integer(runif(16,1,20)), nrow = 4)
+
+## list matrix
+my_matrix
+
+``` 
+
+```{r 10}
+# my_logical which is a 100-element vector of TRUE or FALSE values. Do this efficiently by setting up a vector of random values and then applying an inequality to it.
+
+my_vec <- sample(10, 100, replace = TRUE)
+
+my_vec
+
+## check for number 5 as boolean return
+my_logical <- '5' == my_vec
+
+## list logical
+my_logical
+
+``` 
+
+
+```{r 11}
+# my_letters, which is a 26-element vector of all the lower-case letters in random order.
+
+
+my_letters <- sample(letters)
+
+## list letters
+my_letters
+
+``` 
+
+
+```{r 12}
+## Completed List:
+my_list <- list(my_matrix, my_logical, my_letters)
+
+my_list
+
+``` 
+
+
+```{r 13}
+# create a new list, which has the element[2,2] from the matrix, the second element of the logical vector, and the second element of the letters vector.
+
+new_list <- list(my_matrix[2,2], my_logical[2], my_letters[2])
+
+new_list
+
+```   
+
+```{r 14}
+# use the typeof() function to confirm the underlying data types of each component in this list
+
+typeof(new_list[[1]])
+typeof(new_list[[2]])
+typeof(new_list[[3]])
+
+```   
+
+
+```{r n14}
+# combine the underlying elements from the new list into a single atomic vector with the c() function.
+
+my_vec <- c(new_list[[1]], new_list[[2]], new_list[[3]])
+
+# what is the data type of this vector?
+
+typeof(my_vec)
+
+``` 
+
+## 3.  
+
+### Create a data frame with two variables (= columns) and 26 cases (= rows).
+
+```{r 15}
+
+# call the first variable my_unis and fill it with 26 random uniform values from 0 to 10
+my_unis <- as.integer(runif(26,0,10))
+
+
+my_unis
+
+
+# call the second variable my_letters and fill it with 26 capital letters in random order.
+
+my_letters <- sample(LETTERS)
+
+my_letters
+
+## Create dataframe
+dataframe <- data.frame(my_unis, my_letters, stringsAsFactors = FALSE)
+
+
+``` 
+
+
+```{r 16}
+# for the first variable, use a single line of code in R to select 4 random rows and replace the numerical values in those rows with NA.
+
+dataframe[sample(1:26, 4), 'my_unis'] <- NA
+
+
+```   
+
+```{r 17}
+# for the first variable, write a single line of R code to identify which rows have the missing values.
+
+which(is.na(dataframe))
+
+```   
+
+```{r 18}
+#for the second variable, sort it in alphabetical order
+
+sort(dataframe$my_letters)
+
+```   
+
+```{r 19}
+#calculate the column mean for the first variable.
+
+mean(dataframe$my_unis, na.rm = TRUE)
+
+``` 
+
