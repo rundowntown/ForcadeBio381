@@ -1,0 +1,411 @@
+---
+title: "Homework 8"
+author: "Daniel Forcade"
+date: "4/17/2021"
+output:   
+  rmdformats::readthedown:
+  self_contained: true
+thumbnails: true
+lightbox: true
+gallery: false
+highlight: tango
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+## Library
+library(tidyverse)
+library(psych)
+library(dplyr)
+library(reshape2)
+library(ggsci)
+library(ggthemes)
+library(hrbrthemes)
+library(ggpubr)
+```
+
+## Data Setup/Creation  
+I used publicly available basketball metrics to create two distributions of `Assists per Game` separated by `Position`, for 2001 and 2021.  I used the average for mean, and a reasonable standard deviation based on basic research of what the expected variance would be.  
+My hypothesis is that Assists per Game have increased in the last 10 years, with an emphasis on a more well-rounded game for each position.  This should result in higher Assists per Game averages for Power position players (`Centers`, `Power Forwards`) over the last 10 years.  
+
+
+```{r datacreate}
+set.seed(82)
+
+## Two dataframes of related values
+## Assists by position 2001 and 2021
+## Mean/averages calculated from data on basketball-reference.com
+
+## Centers
+center_2001 <- rnorm(n = 100, mean = 0.83, sd = .3)
+center_2021 <- rnorm(n = 100, mean = 1.6, sd = .4)
+
+## Point Guards
+pg_2001 <- abs(rnorm(n = 100, mean = 4.06, sd = 2)) ## abs so I can increase sd without getting negatives
+pg_2021 <- abs(rnorm(n = 100, mean = 4.05, sd = 2))
+
+## Shooting Guards
+sg_2001 <- rnorm(n= 100, mean = 2.6, sd = .8)
+sg_2021 <- rnorm(n = 100, mean = 2.2, sd = .7)
+
+## Small Forwards
+sf_2001 <- rnorm(n = 100, mean = 1.8, sd = .48)
+sf_2021 <- rnorm(n = 100, mean = 1.9, sd = .5)
+
+## Power Forwards
+pf_2001 <- rnorm(n = 100, mean = 1.4, sd = .35)
+pf_2021 <- rnorm(n = 100, mean = 1.8, sd = .45)
+```  
+
+## More Cleaning  
+I needed additional transformations to graph the data as I intended.  
+
+```{r dataframe, warning = FALSE, message = FALSE}
+
+## Create dataframes from vectors
+
+
+### Dataframes with no melt
+
+## 2001 Assists
+assists_2001 <- data.frame(center_2001, pg_2001, sg_2001, sf_2001, pf_2001)
+
+## Rename Variables
+assists_2001 <- assists_2001 %>% 
+  rename(
+    Center = center_2001,
+    Point_Guard = pg_2001,
+    Shooting_Guard = sg_2001,
+    Shooting_Forward = sf_2001,
+    Power_Forward = pf_2001
+  )
+
+## 2021 Assists
+assists_2021 <- data.frame(center_2021, pg_2021, sg_2021, sf_2021, pf_2021)
+
+## Rename Variables
+assists_2021 <- assists_2021 %>% 
+  rename(
+    Center = center_2021,
+    Point_Guard = pg_2021,
+    Shooting_Guard = sg_2021,
+    Shooting_Forward = sf_2021,
+    Power_Forward = pf_2021
+  )
+
+
+## 2001 Assists Dataframe Melted
+nba_assists_2001 <- melt(assists_2001)
+colnames(nba_assists_2001) <- c('Position', 'APG')
+
+
+
+## 2021 Assists Dataframe Melted
+nba_assists_2021 <- melt(assists_2021)
+colnames(nba_assists_2021) <- c('Position', 'APG')
+
+
+
+```
+
+
+## Graphical Analysis  
+
+I ran a pairs.panel on unaltered dataset to look for any correlations, and view the general distribution.  There were no interesting associations of note.  From here, I wanted to visualize the differences with a boxplot sequence.  In this, there are three `Positions` that appear to have significant movement from 2001 to 2021; `Center`, `Shooting Guard`, and `Power Foward`.  `Point Guard` also seems to have increased over the years in variance.  
+Additionally, I tallied the Assist Totals and multiplied them by 82 games (Season length), to get the Season totals for Assists.  This is represented in the bar chart, which demonstrates a rise in assists from 2001 to 2021.  
+
+
+```{r analyze, message = FALSE, warning = FALSE}
+## Assists 2001
+pairs.panels(assists_2001)
+
+## Assists 2021
+pairs.panels(assists_2021)
+
+
+# 2001 Boxplot
+g1 <- ggplot(data = nba_assists_2001,
+       mapping = aes(x = Position, y = APG, fill = Position))+
+  geom_boxplot(alpha = .9, color = 'grey')+
+  scale_fill_futurama()+
+  labs(title = 'Assist Per Game by Position: 2001')+
+  guides(fill = FALSE)+
+  ylim(0,10)+
+  theme_modern_rc()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# 2021 Boxplot
+g2 <- ggplot(data = nba_assists_2021,
+       mapping = aes(x = Position, y = APG, fill = Position))+
+  geom_boxplot(alpha = .9, color = 'grey')+
+  scale_fill_futurama()+
+  labs(title = 'Assist Per Game by Position: 2021')+
+  guides(fill = FALSE)+
+  ylim(0,10)+
+  theme_modern_rc()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# 2001 Boxplot Print
+g1
+
+# 2021 Boxplot Print
+g2
+
+
+## Total Assist Comparison
+total_2001 <- sum(nba_assists_2001$APG * 82)
+total_2021 <- sum(nba_assists_2021$APG * 82)
+
+total_assists <- data.frame(total_2001, total_2021)
+
+nba_total_assists <- melt(total_assists)
+colnames(nba_total_assists) <- c('Year', 'Total')
+
+ggplot(data = nba_total_assists,
+       mapping = aes(x = Year, y = Total, fill = Year))+
+  geom_col(position = 'dodge', color = 'black', size = 1, alpha = .9)+
+  guides(fill = FALSE)+
+  scale_fill_startrek()+
+  theme_ipsum_tw()+
+  labs(title = "Total Assists: 2001 vs 2021")+
+  scale_x_discrete(labels = c('2001', '2021'))
+```
+
+## Further Cleaning  
+More cleaning to set up t.tests
+```{r stattest}
+
+## 2001 vs 2021 Positions
+
+## Center
+center_data <- assists_2001 %>% 
+  select(Center)
+center_data[2] <- assists_2021 %>% 
+  select(Center)
+
+center_data <- center_data %>% 
+  rename(
+    C_2001 = Center,
+    C_2021 = Center.1)
+
+## PG
+pg_data <- assists_2001 %>% 
+  select(Point_Guard)
+pg_data[2] <- assists_2021 %>% 
+  select(Point_Guard)
+
+pg_data <- pg_data %>% 
+  rename(
+    PG_2001 = Point_Guard,
+    PG_2021 = Point_Guard.1)
+
+
+## SG
+sg_data <- assists_2001 %>% 
+  select(Shooting_Guard)
+sg_data[2] <- assists_2021 %>% 
+  select(Shooting_Guard)
+
+sg_data <- sg_data %>% 
+  rename(
+    SG_2001 = Shooting_Guard,
+    SG_2021 = Shooting_Guard.1)
+
+
+## SF
+sf_data <- assists_2001 %>% 
+  select(Shooting_Forward)
+sf_data[2] <- assists_2021 %>% 
+  select(Shooting_Forward)
+
+sf_data <- sf_data %>% 
+  rename(
+    SF_2001 = Shooting_Forward,
+    SF_2021 = Shooting_Forward.1)
+
+
+## PF
+pf_data <- assists_2001 %>% 
+  select(Power_Forward)
+pf_data[2] <- assists_2021 %>% 
+  select(Power_Forward)
+
+pf_data <- pf_data %>% 
+  rename(
+    PF_2001 = Power_Forward,
+    PF_2021 = Power_Forward.1)
+
+```
+
+## t.test  
+We saw there was a visual difference in some of the assists in the boxplots, but was there a statistically significant difference?  To test this, I ran a t.test; conditions are (mostly) normal (I have abs() on point_guard to prevent negative outliers).  The t.test confirmed the visual analysis; there was a statistically significant difference in the means in Assists per Game for `Center`, `Shooting_Guard`, and `Power_Forward`.  The direction of the difference aligns with our hypothesis - it would appear that Assists per Game have increased in the power positions.  
+
+
+```{r asdf}
+
+## Center t.test
+t.test(center_data$C_2001, center_data$C_2021)
+
+## PG t.test
+t.test(pg_data$PG_2001, pg_data$PG_2021)
+
+## SG t.test
+t.test(sg_data$SG_2001, sg_data$SG_2021)
+
+## SF t.test
+t.test(sf_data$SF_2001, sf_data$SF_2021)
+
+## PF t.test
+t.test(pf_data$PF_2001, pf_data$PF_2021)
+```   
+
+## Change the Numbers  
+
+```{r changer, warning = FALSE, message = FALSE}
+## Change the numbers to alter results
+
+## Centers
+center_2001 <- rnorm(n = 10, mean = 0.83, sd = .3)
+center_2021 <- rnorm(n = 10, mean = 2.6, sd = .4)
+
+## Point Guards
+pg_2001 <- abs(rnorm(n = 100, mean = 4.06, sd = 2)) ## abs so I can increase sd without getting negatives
+pg_2021 <- abs(rnorm(n = 100, mean = 5.05, sd = 4))
+
+## Shooting Guards
+sg_2001 <- rnorm(n= 200, mean = 2.6, sd = .8)
+sg_2021 <- rnorm(n = 200, mean = 2.2, sd = .7)
+
+## Small Forwards
+sf_2001 <- rnorm(n = 100, mean = 5.8, sd = .48)
+sf_2021 <- rnorm(n = 100, mean = 1.9, sd = .5)
+
+## Power Forwards
+pf_2001 <- rnorm(n = 50, mean = 1.6, sd = .35)
+pf_2021 <- rnorm(n = 50, mean = 1.8, sd = .45)
+
+
+## Reload All Transformations
+
+
+### Dataframes with no melt
+
+## 2001 Assists
+assists_2001 <- data.frame(center_2001, pg_2001, sg_2001, sf_2001, pf_2001)
+
+## Rename Variables
+assists_2001 <- assists_2001 %>% 
+  rename(
+    Center = center_2001,
+    Point_Guard = pg_2001,
+    Shooting_Guard = sg_2001,
+    Shooting_Forward = sf_2001,
+    Power_Forward = pf_2001
+  )
+
+## 2021 Assists
+assists_2021 <- data.frame(center_2021, pg_2021, sg_2021, sf_2021, pf_2021)
+
+## Rename Variables
+assists_2021 <- assists_2021 %>% 
+  rename(
+    Center = center_2021,
+    Point_Guard = pg_2021,
+    Shooting_Guard = sg_2021,
+    Shooting_Forward = sf_2021,
+    Power_Forward = pf_2021
+  )
+
+
+## 2001 Assists Dataframe Melted
+nba_assists_2001 <- melt(assists_2001)
+colnames(nba_assists_2001) <- c('Position', 'APG')
+
+
+
+## 2021 Assists Dataframe Melted
+nba_assists_2021 <- melt(assists_2021)
+colnames(nba_assists_2021) <- c('Position', 'APG')
+
+
+## 2001 vs 2021 Positions
+
+## Center
+center_data <- assists_2001 %>% 
+  select(Center)
+center_data[2] <- assists_2021 %>% 
+  select(Center)
+
+center_data <- center_data %>% 
+  rename(
+    C_2001 = Center,
+    C_2021 = Center.1)
+
+## PG
+pg_data <- assists_2001 %>% 
+  select(Point_Guard)
+pg_data[2] <- assists_2021 %>% 
+  select(Point_Guard)
+
+pg_data <- pg_data %>% 
+  rename(
+    PG_2001 = Point_Guard,
+    PG_2021 = Point_Guard.1)
+
+
+## SG
+sg_data <- assists_2001 %>% 
+  select(Shooting_Guard)
+sg_data[2] <- assists_2021 %>% 
+  select(Shooting_Guard)
+
+sg_data <- sg_data %>% 
+  rename(
+    SG_2001 = Shooting_Guard,
+    SG_2021 = Shooting_Guard.1)
+
+
+## SF
+sf_data <- assists_2001 %>% 
+  select(Shooting_Forward)
+sf_data[2] <- assists_2021 %>% 
+  select(Shooting_Forward)
+
+sf_data <- sf_data %>% 
+  rename(
+    SF_2001 = Shooting_Forward,
+    SF_2021 = Shooting_Forward.1)
+
+
+## PF
+pf_data <- assists_2001 %>% 
+  select(Power_Forward)
+pf_data[2] <- assists_2021 %>% 
+  select(Power_Forward)
+
+pf_data <- pf_data %>% 
+  rename(
+    PF_2001 = Power_Forward,
+    PF_2021 = Power_Forward.1)
+
+```    
+
+## Altered t.test   
+Changing the numbers drastically effects the t.test, which was to be expected.  
+```{r altertest}
+
+## Center t.test
+t.test(center_data$C_2001, center_data$C_2021)
+
+## PG t.test
+t.test(pg_data$PG_2001, pg_data$PG_2021)
+
+## SG t.test
+t.test(sg_data$SG_2001, sg_data$SG_2021)
+
+## SF t.test
+t.test(sf_data$SF_2001, sf_data$SF_2021)
+
+## PF t.test
+t.test(pf_data$PF_2001, pf_data$PF_2021)
+```   

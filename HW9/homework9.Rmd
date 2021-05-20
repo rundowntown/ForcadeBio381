@@ -1,0 +1,180 @@
+---
+title: "Homework 9"
+author: "Daniel Forcade"
+date: "4/25/2021"
+output:   
+  rmdformats::readthedown:
+  self_contained: true
+thumbnails: true
+lightbox: true
+gallery: false
+highlight: tango
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+## Library
+library(tidyverse)
+library(dplyr)
+library(reshape2)
+library(ggpubr)
+library(ggsci)
+library(ggthemes)
+library(hrbrthemes)
+```  
+
+
+
+
+
+## 2001 Data Generation Function  
+
+```{r datagen, message = FALSE}
+##################################################
+# FUNCTION: Generate Assist Dataset 2001
+# Generates Data
+# input: Number of Observations (x)
+# output: 2001 Melted Data
+#------------------------------------------------- 
+Assist_Data_2001 <- function(var) {
+  ## Centers
+  center_2001 <- rnorm(n = var, mean = 0.83, sd = .3)
+  ## Point Guards
+  pg_2001 <- abs(rnorm(n = var, mean = 4.06, sd = 2)) ## abs so I can increase sd without getting negatives
+  ## Shooting Guards
+  sg_2001 <- rnorm(n = var, mean = 2.6, sd = .8)
+  ## Small Forwards
+  sf_2001 <- rnorm(n = var, mean = 1.8, sd = .48)
+  ## Power Forwards
+  pf_2001 <- rnorm(n = var, mean = 1.4, sd = .35)
+  assists_2001 <- data.frame(center_2001, pg_2001, sg_2001, sf_2001, pf_2001)
+  ## Rename Variables
+  assists_2001 <- assists_2001 %>% 
+    rename(
+      Center = center_2001,
+      Point_Guard = pg_2001,
+      Shooting_Guard = sg_2001,
+      Shooting_Forward = sf_2001,
+      Power_Forward = pf_2001
+    )
+  ## 2001 Assists Dataframe Melted
+  nba_assists_2001 <- melt(assists_2001)
+  colnames(nba_assists_2001) <- c('Position', 'APG')
+  nba_assists_2001$Assist_Data_2001 <- "2001" # Name for Reference
+  
+  return(nba_assists_2001)
+}
+
+```
+
+## 2021 Data Generation Function  
+
+```{r datagen2, message = FALSE}
+##################################################
+# FUNCTION: Generate Assist Dataset 2021
+# Generates Data
+# input: Number of Observations (x)
+# output: 2021 Melted Data
+#------------------------------------------------- 
+Assist_Data_2021 <- function(var) {
+  ## Centers
+  center_2021 <- rnorm(n = var, mean = 1.6, sd = .4)
+  ## Point Guards
+  pg_2021 <- abs(rnorm(n = var, mean = 4.05, sd = 2))
+  ## Shooting Guards
+  sg_2021 <- rnorm(n = var, mean = 2.2, sd = .7)
+  ## Small Forwards
+  sf_2021 <- rnorm(n = var, mean = 1.9, sd = .5)
+  ## Power Forwards
+  pf_2021 <- rnorm(n = var, mean = 1.8, sd = .45)
+  
+  ## 2021 Assists
+  assists_2021 <- data.frame(center_2021, pg_2021, sg_2021, sf_2021, pf_2021)
+  
+  ## Rename Variables
+  assists_2021 <- assists_2021 %>% 
+    rename(
+      Center = center_2021,
+      Point_Guard = pg_2021,
+      Shooting_Guard = sg_2021,
+      Shooting_Forward = sf_2021,
+      Power_Forward = pf_2021
+    )
+  ## 2021 Assists Dataframe Melted
+  nba_assists_2021 <- melt(assists_2021)
+  colnames(nba_assists_2021) <- c('Position', 'APG')
+  nba_assists_2021$Assist_Data_2021 <- "2021" # Name for reference
+  
+  return(nba_assists_2021)
+}
+
+
+```
+
+## Boxplot Function  
+
+```{r ggplot, warning = FALSE, message = FALSE}
+##################################################
+# FUNCTION: Auto_Boxplot
+# Creates Boxplot
+# input: Position, APG
+# output: Boxplot
+#------------------------------------------------- 
+Assist_Boxplot <- function(var) {
+  ggplot(data = var,
+       mapping = aes(x = var[,1], y = var[,2], fill = var[,1]))+
+  geom_boxplot(alpha = .9, color = 'grey')+
+  scale_fill_futurama()+
+  guides(fill = FALSE)+
+  ylim(0,10)+
+  labs(x = names(var[,]), y = names(var[2]), title = names(var[3]))+
+  theme_modern_rc()+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+}
+
+
+## 2001 with 300 observations for each
+mydata <- Assist_Data_2001(300)
+## Boxplot Call 2001
+Assist_Boxplot(mydata)
+
+## 2021 with 600 observations
+mydata <- Assist_Data_2021(600)
+
+## Boxplot Call 2021
+Assist_Boxplot(mydata)
+```
+
+## New Graph Function
+```{r newgraph}
+
+
+##################################################
+# FUNCTION: Positional Total Graph
+# Tallys Total Assists for Each Position; Graphs
+# input: dataset
+# output: Graph of Totals by Position
+#------------------------------------------------- 
+powergraph <- function(var) {
+  ggplot(data = var,
+         mapping = aes(x = var[,1], y = var[,2]))+
+    geom_col(aes(color = var[,1]))+
+    theme_pubclean()+
+    guides(fill = FALSE, color = FALSE)+
+    labs(x = names(var[,]), y = 'Total Assists per Game', title = names(var[3]))+
+    scale_color_ipsum()
+}
+
+mydata <- Assist_Data_2021(1000)
+powergraph(mydata)
+```
+
+
+
+
+
+
+
+
+
