@@ -1,0 +1,345 @@
+---
+title: "Homework 11"
+author: "Daniel Forcade"
+date: "5/3/2021"
+output:   
+  rmdformats::readthedown:
+  self_contained: true
+thumbnails: true
+lightbox: true
+gallery: false
+highlight: tango
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+## Library
+library(tidyverse)
+library(TeachingDemos)
+library(ggpubr)
+library(hrbrthemes)
+library(ggsci)
+library(psych)
+```  
+
+I'm taking the `mandible` dataset I was working with before, condensing the number of variables, and creating eight batch files of simulated data to compare.  
+I will use mean, sd, and number of observations from the original dataset to create the eight batches.  
+
+## Setup  
+
+```{r set}
+## Data Setup
+
+## Set seed
+set.seed(77)
+
+## Read in CSV
+mandible <- read.csv('mandible.csv')
+
+## Remove excess columns
+mandible <- mandible[-c(3:ncol(mandible))]
+
+# Summary
+summary(mandible)
+
+## Standard Dev
+prothorax_sd <- sd(mandible$Prothorax.width)
+mandible_sd <- sd(mandible$Mandible.length)
+
+## Means
+prothorax_mean <- mean(mandible$Prothorax.width)
+mandible_mean <- mean(mandible$Mandible.length)
+
+## Dimensions
+obs <- nrow(mandible)
+obs
+
+
+```
+
+## Filebuild  
+
+```{r 1}
+##################################################
+# function: FileBuilder
+# create a set of random files for regression
+# input: fileN = number of files to create
+#       : fileFolder = name of folder for random files
+#       : fileSize = c(min,max) number of rows in file
+#       : fileNA = number on average of NA values per column
+# output: set of random files
+#------------------------------------------------- 
+FileBuilder <- function(fileN=10,
+                        fileFolder="mandibleFile/",
+                        fileSize=c(15,100),
+                        fileNA=3){
+for (i in seq_len(fileN)) {
+fileLength <- sample(fileSize[1]:fileSize[2],size=1) # get number of rows
+Prothorax.width <- rnorm(n= obs, mean = prothorax_mean, sd = prothorax_sd) ## Create random Y values based on prothorax vector
+Mandible.length <- rnorm(n = obs, mean = mandible_mean, sd = mandible_sd) ## Create random X values based on mandible vector
+dF <- data.frame(Prothorax.width, Mandible.length) # bind into a data frame
+
+# create label for file name with padded zeroes
+fileLabel <- paste(fileFolder,
+                       "mandible_batch",
+                       formatC(i,
+                       width=3,
+                       format="d",
+                       flag="0"),
+                       ".csv",sep="")
+
+# set up data file and incorporate time stamp and minimal metadata
+write.table(cat("# Simulated Mandible data file for batch processing","\n",
+                    "# timestamp: ",as.character(Sys.time()),"\n",
+                    "# DCF","\n",
+                    "# ------------------------", "\n",
+                    "\n",
+                    file=fileLabel,
+                    row.names="",
+                    col.names="",
+                    sep=""))
+
+# now add the data frame
+write.table(x=dF,
+            file=fileLabel,
+            sep=",",
+            row.names=FALSE,
+            append=TRUE)
+
+
+}
+}
+```  
+
+
+```{r 2}
+##################################################
+# function: regStats
+# fits linear model, extracts statistics
+# input: 2-column data frame (x and y)
+# output: slope, p-value, and r2
+#------------------------------------------------- 
+regStats <- function(d=NULL) {
+             if(is.null(d)) {
+               mandible_x <- runif(10)
+               prothorax_y <- runif(10)
+               d <- data.frame(Prothorax.width, Mandible.length)
+             }
+  . <- lm(data=d,d[,2]~d[,1])
+  . <- summary(.)
+  statsList <- list(Slope=.$coefficients[2,1],
+                    pVal=.$coefficients[2,4],
+                    r2=.$r.squared)
+  return(statsList)
+
+}
+```
+
+## Output  
+
+```{r 3, message = FALSE, warning = FALSE}
+#--------------------------------------------
+# Global variables
+fileFolder <- "mandibleFile/"
+nFiles <- 8
+fileOut <- "StatsSummary.csv"
+#--------------------------------------------
+
+# Create 100 random data sets
+dir.create(fileFolder)
+FileBuilder(fileN=nFiles)
+fileNames <- list.files(path=fileFolder)
+
+# Create data frame to hold file summary statistics
+ID <- seq_along(fileNames)
+fileName <- fileNames
+slope <- rep(NA,nFiles)
+pVal <- rep(NA,nFiles)
+r2 <- rep(NA,nFiles)
+
+statsOut <- data.frame(ID,fileName,slope,pVal,r2)
+
+# batch process by looping through individual files
+for (i in seq_along(fileNames)) {
+  data <- read.table(file=paste(fileFolder,fileNames[i],sep=""),
+                     sep=",",
+                     header=TRUE) # read in next data file
+  
+  dClean <- data[complete.cases(data),] # get clean cases
+  
+  . <- regStats(dClean) # pull regression stats from clean file
+  statsOut[i,3:5] <- unlist(.) # unlist, copy into last 3 columns
+  
+}
+# set up output file and incorporate time stamp and minimal metadata
+  write.table(cat("# Summary stats for ",
+                    "batch processing of regression models","\n",
+                    "# timestamp: ",as.character(Sys.time()),"\n",
+                    "# DCF","\n",
+                    "# ------------------------", "\n",
+                    "\n",
+                    file=fileOut,
+                    row.names="",
+                    col.names="",
+                    sep=""))
+  
+# now add the data frame
+  write.table(x=statsOut,
+              file=fileOut,
+              row.names=FALSE,
+              col.names=TRUE,
+              sep=",",
+              append=TRUE)
+  
+print(statsOut)
+```  
+
+Great, that made eight .csv files/datasets with the parameters specified, and placed them all in the newly created file specified (\\ForcadeBio381\\HW11\\mandibleFile).  All of the slopes are fairly flat.  Let's see how this compares visually against our original dataset.  
+
+
+
+## Investigate Batch vs Data  
+
+```{r explore}
+
+#### Investigate Batch vs Data
+
+## Load Data (Skip = 4 to clean out created metadata)
+mandible_data <- read.csv('mandible.csv')
+mandible_batch_1 <- read.csv('mandibleFile/mandible_batch001.csv', skip = 4)
+mandible_batch_2 <- read.csv('mandibleFile/mandible_batch002.csv', skip = 4)
+mandible_batch_3 <- read.csv('mandibleFile/mandible_batch003.csv', skip = 4)
+mandible_batch_4 <- read.csv('mandibleFile/mandible_batch004.csv', skip = 4)
+mandible_batch_5 <- read.csv('mandibleFile/mandible_batch005.csv', skip = 4)
+mandible_batch_6 <- read.csv('mandibleFile/mandible_batch006.csv', skip = 4)
+mandible_batch_7 <- read.csv('mandibleFile/mandible_batch007.csv', skip = 4)
+mandible_batch_8 <- read.csv('mandibleFile/mandible_batch008.csv', skip = 4)
+
+## Remove excess columns
+mandible_data <- mandible_data[-c(3:ncol(mandible_data))]
+```  
+
+
+### Graph Set  
+
+```{r graphs, warning = FALSE, message = FALSE}
+
+### Graph Set
+# Point Graph with lm
+
+g0 <- ggplot(data = mandible_data,
+       mapping = aes(x = Prothorax.width, y = Mandible.length))+
+  geom_point()+
+  geom_smooth(method = 'lm')+
+  labs(title = "Mandible Data")
+
+## Batch 1
+g1 <- ggplot(data = mandible_batch_1,
+       mapping = aes(x = Prothorax.width, y = Mandible.length))+
+  geom_point()+
+  geom_smooth(method = 'lm', color = 'red')+
+  labs(title = "Batch 1")
+
+## Batch 2
+g2 <- ggplot(data = mandible_batch_2,
+       mapping = aes(x = Prothorax.width, y = Mandible.length))+
+  geom_point()+
+  geom_smooth(method = 'lm', color = 'green')+
+  labs(title = "Batch 2")
+
+## Batch 3
+g3 <- ggplot(data = mandible_batch_3,
+       mapping = aes(x = Prothorax.width, y = Mandible.length))+
+  geom_point()+
+  geom_smooth(method = 'lm', color = 'yellow')+
+  labs(title = "Batch 3")
+
+## Batch 4
+g4 <- ggplot(data = mandible_batch_4,
+       mapping = aes(x = Prothorax.width, y = Mandible.length))+
+  geom_point()+
+  geom_smooth(method = 'lm', color = 'orange')+
+  labs(title = "Batch 4")
+
+## Batch 5
+g5 <- ggplot(data = mandible_batch_5,
+       mapping = aes(x = Prothorax.width, y = Mandible.length))+
+  geom_point()+
+  geom_smooth(method = 'lm', color = 'purple')+
+  labs(title = "Batch 5")
+
+## Batch 6
+g6 <- ggplot(data = mandible_batch_6,
+       mapping = aes(x = Prothorax.width, y = Mandible.length))+
+  geom_point()+
+  geom_smooth(method = 'lm', color = 'orchid4')+
+  labs(title = "Batch 6")
+
+## Batch 7
+g7 <- ggplot(data = mandible_batch_7,
+       mapping = aes(x = Prothorax.width, y = Mandible.length))+
+  geom_point()+
+  geom_smooth(method = 'lm', color = 'steelblue')+
+  labs(title = "Batch 7")
+
+## Batch 8
+g8 <- ggplot(data = mandible_batch_8,
+       mapping = aes(x = Prothorax.width, y = Mandible.length))+
+  geom_point()+
+  geom_smooth(method = 'lm', color = 'goldenrod4')+
+  labs(title = "Batch 8")
+
+## Print All
+ggarrange(g0,g1,g2,g3,g4,g5,g6,g7,g8)
+
+```  
+
+
+### Pairs Panels  
+
+
+```{r pairs}
+## Pairs Panel Sampler Check
+
+## OG Data
+p0 <- pairs.panels(mandible_data)
+
+## Batch 1
+p1 <- pairs.panels(mandible_batch_1)
+
+## Batch 2
+p2 <- pairs.panels(mandible_batch_2)
+
+## Batch 3
+p3 <- pairs.panels(mandible_batch_3)
+
+## Batch 4
+p4 <- pairs.panels(mandible_batch_4)
+
+## Batch 5
+p5 <- pairs.panels(mandible_batch_5)
+```  
+
+All eight batch generations came out fairly similar; none are close to the correlation present in the original dataset.  The correlation exhibited between Mandible Size and Prothorax Width does not seem to be explained with tailored random generation.  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

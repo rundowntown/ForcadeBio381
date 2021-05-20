@@ -1,0 +1,262 @@
+---
+title: "Homework 10"
+author: "Daniel Forcade"
+date: "4/28/2021"
+output:   
+  rmdformats::readthedown:
+  self_contained: true
+thumbnails: true
+lightbox: true
+gallery: false
+highlight: tango
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+
+library(tidyverse)
+library(TeachingDemos)
+library(ggthemes)
+```
+
+## 1.  
+
+```{r 1}
+
+#####
+# Function: ZeroCounter
+# Counts number of zeros in vector
+# Input: Numeric vector
+# Output: Total number of 0s
+ZeroCounter <- function(x = NULL) {
+  counter <- 0
+  for (i in (1:length(x))) {
+    if (x[i] == 0) {
+      counter <- counter + 1
+    }
+  }
+  return(counter)
+}
+
+
+## Test: Should have 3 hits
+x = c(0,1,5,0,4,0)
+ZeroCounter(x)
+
+## Test on Random Set
+set.seed(55)
+x = sample(0:1, 500, replace = T)
+
+## Table states 239 0s in set.  ZeroCounter should return 239
+table(x)
+ZeroCounter(x)
+
+
+```  
+
+## 2.  
+
+```{r 2}
+
+## Subsetting 1 line Rewrite
+## Should total 239 from currently loaded x value
+ZeroCounter_Sub <- length(x[x == 0])
+ZeroCounter_Sub
+```
+
+## 3.  
+
+```{r 3}
+#####
+# Function: Two_Integer
+# Creates a Matrix and Fills Matrix with Mutliplication Values
+# Input: (x,y)  x: rows, y: columns
+# Output: Completed Matrix
+Two_Integer <- function(x,y) {
+  mymatrix <- matrix(nrow = x, ncol = y) # Matrix Creation
+  for (i in 1:x) { # Columns
+    for (k in 1:y) { # Rows
+      mymatrix[i,k] <- i * k # Fill
+    }}
+  return(mymatrix)
+}
+
+## Random Number Run
+x = sample(4:14, 1)
+y = sample(4:14, 1)
+## Values selected
+table(x,y)
+
+## Function Test
+Two_Integer(x,y)
+
+
+```  
+
+
+## 4.  
+
+```{r 4}
+## Randomization
+
+set.seed(56)
+
+
+####### ###########################################
+# function: readData
+# read in (or generate) data set for analysis
+# input: file name (or nothing, for this demo)
+# output: 3 column data frame of observed data (ID,x,y)
+#------------------------------------------------- 
+readData <- function(z) {
+  dF <- read.table(file = z, header = TRUE, sep = ',', stringsAsFactors = FALSE)
+  dF['ID'] <- 1:nrow(dF) # Create ID for imported dataset
+  dF <- dF %>%  # Reorder ID to position 1
+    relocate(ID)
+  dF <- dF[-c(4:ncol(dF))] # Remove additional columns from dataframe
+return(dF)
+}
+
+
+
+mandible <- readData('mandible.csv')
+
+head(mandible, 20)
+```  
+
+
+
+```{r 5}
+##################################################
+# function: getMetric
+# calculate metric for randomization test
+# input: 2-column data frame for regression
+# output: regression slope
+#------------------------------------------------- 
+getMetric <- function(z=NULL) {
+                  if(is.null(z)){
+                  xObs <- 1:20
+                  yObs <-  xObs + 10*rnorm(20)
+                  z <- data.frame(ID=seq_along(xObs),xObs,yObs)} # set up data frame   
+. <- lm(z[,3]~z[,2])
+. <- summary(.)
+. <- .$coefficients[2,1]
+
+slope <- .
+return(slope)
+}
+
+getMetric(mandible)
+```  
+
+
+```{r 6}
+##################################################
+# function: shuffleData
+# randomize data for regression analysis
+# input: 3-column data frame (ID,xVar,yVar)
+# output: 3-column data frame (ID,xVar,yVar)
+#------------------------------------------------- 
+shuffleData <- function(z=NULL) {
+                if(is.null(z)){
+                  xObs <- 1:20
+                  yObs <- xObs + 3*rnorm(20)
+                  z <- data.frame(ID=seq_along(xObs),xObs,yObs)} # set up data frame                 
+z[,3] <- sample(z[,3]) # use sample function with defaults to reshuffle column
+
+return(z)
+}
+
+```  
+
+
+```{r 7}
+##################################################
+# function: getPVal
+# calculate p value from simulation
+# input: list of observed metric, and vector of simulated metrics
+# output: lower, upper tail probability values
+#------------------------------------------------- 
+getPVal <- function(z=NULL) {
+                      if(is.null(z)){
+                      z <- list(xObs=runif(1),xSim=runif(1000))}
+                      pLower <- mean(z[[2]]<=z[[1]])
+                      pUpper <- mean(z[[2]]>=z[[1]])
+return(c(pL=pLower,pU=pUpper))
+                    }
+
+getPVal()
+```
+
+```{r 8, messsage = FALSE}
+##################################################
+# function: plotRanTest
+# create ggplot of histogram of simulated values
+# input: list of observed metric and vector of simulated metrics
+# output: saved ggplot graph
+#------------------------------------------------- 
+plotRanTest <- function(z=NULL) {
+                if(is.null(z)){
+                  z <- list(rnorm(1),rnorm(1000)) }
+dF <- data.frame(ID=seq_along(z[[2]]),simX=z[[2]])
+p1 <- ggplot(data=dF,mapping=aes(x=simX))
+p1 + geom_histogram(mapping=aes(fill=I("goldenrod"),color=I("black"))) +
+geom_vline(aes(xintercept=z[[1]],col="blue")) 
+
+}
+
+plotRanTest()
+
+```
+
+```{r 9}
+## Run with Imported Data
+nSim <- 1000
+Xsim <- rep(NA, nSim)
+dF <- readData('mandible.csv')
+Xobs <- getMetric(dF)
+
+for (i in seq_len(nSim)) {
+Xsim[i] <- getMetric(shuffleData(dF))
+}
+
+slopes <- list(Xobs,Xsim)
+getPVal(slopes)
+```
+
+```{r 10, message = FALSE}
+## Plot
+plotRanTest(slopes)
+```    
+
+I believe this can be interpreted as a very strong relationship.  
+
+
+## 5.  
+
+```{r 11, warning = FALSE, message = FALSE}
+### Statistical Test
+
+## Model
+mandible_model <- lm(mandible$Prothorax.width ~ mandible$Mandible.length)
+
+
+## Summary
+summary(mandible_model)
+
+## Point Plot
+ggplot(data = mandible,
+       mapping = aes(x = Mandible.length, y = Prothorax.width))+
+  geom_point()+
+  geom_smooth(method = 'lm', se = FALSE)+
+  theme_hc()+
+  labs(title = 'Prothorax Width by Mandible Length')
+
+## Cor test
+cor(mandible$Prothorax.width,mandible$Mandible.length)
+```
+
+
+
+P-value is very small.  Extremely strong evidence than Prothorax width is related to Mandible Length.  I believe that this reflects the values provided by the randomization tests.  

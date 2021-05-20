@@ -1,0 +1,208 @@
+---
+title: "Homework 7"
+author: "Daniel Forcade"
+date: "4/9/2021"
+output:   
+  rmdformats::readthedown:
+  self_contained: true
+thumbnails: true
+lightbox: true
+gallery: false
+highlight: tango
+---
+
+
+##  Sample Data Run
+
+```{r prompt 1, message = FALSE, warning = FALSE}
+# Library load
+library(tidyverse)
+library(ggplot2) # for graphics
+library(MASS) # for maximum likelihood estimation
+library(ggthemes)
+library(hrbrthemes)
+```  
+
+```{r prompt 2, warning = FALSE}
+# quick and dirty, a truncated normal distribution to work on the solution set
+z <- rnorm(n=3000,mean=0.2)
+z <- data.frame(1:3000,z)
+names(z) <- list("ID","myVar")
+z <- z[z$myVar>0,]
+str(z)
+summary(z$myVar)
+```  
+
+
+```{r prompt 3, message = FALSE, warning = FALSE}
+# Simple Histogram from Provided Code (density option)
+p1 <- ggplot(data=z, aes(x=myVar, y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) 
+print(p1)
+```  
+
+```{r prompt 4, message = FALSE, warning = FALSE}
+## Empirical density curve added
+p1 <-  p1 +  geom_density(linetype="dotted",size=0.75)
+print(p1)
+```  
+```{r prompt 5, warning = FALSE}
+### Fit normal distribution
+normPars <- fitdistr(z$myVar,"normal")
+print(normPars)
+str(normPars)
+normPars$estimate["mean"] # note structure of getting a named attribute
+```  
+
+
+
+```{r prompt 6, warning = FALSE, message = FALSE}
+## Plot normal probability density
+meanML <- normPars$estimate["mean"]
+sdML <- normPars$estimate["sd"]
+
+xval <- seq(0,max(z$myVar),len=length(z$myVar))
+
+ stat <- stat_function(aes(x = xval, y = ..y..), fun = dnorm, colour="red", n = length(z$myVar), args = list(mean = meanML, sd = sdML))
+ p1 + stat
+```  
+
+
+```{r prompt 7, message = FALSE}
+## Plot exponential probability density
+expoPars <- fitdistr(z$myVar,"exponential")
+rateML <- expoPars$estimate["rate"]
+
+stat2 <- stat_function(aes(x = xval, y = ..y..), fun = dexp, colour="blue", n = length(z$myVar), args = list(rate=rateML))
+ p1 + stat + stat2
+```  
+
+```{r prompt 8, message = FALSE}
+### Plot uniform probability density
+stat3 <- stat_function(aes(x = xval, y = ..y..), fun = dunif, colour="darkgreen", n = length(z$myVar), args = list(min=min(z$myVar), max=max(z$myVar)))
+ p1 + stat + stat2 + stat3
+```  
+
+
+```{r prompt 9, message = FALSE, warning = FALSE}
+### Plot gamma probability density
+gammaPars <- fitdistr(z$myVar,"gamma")
+shapeML <- gammaPars$estimate["shape"]
+rateML <- gammaPars$estimate["rate"]
+
+stat4 <- stat_function(aes(x = xval, y = ..y..), fun = dgamma, colour="brown", n = length(z$myVar), args = list(shape=shapeML, rate=rateML))
+ p1 + stat + stat2 + stat3 + stat4
+```  
+
+```{r prompt 10, warning = FALSE, message = FALSE}
+## Plot beta probability density
+pSpecial <- ggplot(data=z, aes(x=myVar/(max(myVar + 0.1)), y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) + 
+  xlim(c(0,1)) +
+  geom_density(size=0.75,linetype="dotted")
+
+betaPars <- fitdistr(x=z$myVar/max(z$myVar + 0.1),start=list(shape1=1,shape2=2),"beta")
+shape1ML <- betaPars$estimate["shape1"]
+shape2ML <- betaPars$estimate["shape2"]
+
+statSpecial <- stat_function(aes(x = xval, y = ..y..), fun = dbeta, colour="orchid", n = length(z$myVar), args = list(shape1=shape1ML,shape2=shape2ML))
+pSpecial + statSpecial
+```  
+
+
+
+
+## Imported Data Set  
+
+
+```{r import 2}
+## Imported Data Set (Mandible Size)
+
+## Reload z
+z <- read.table("mandible.csv",header=TRUE,sep=",", stringsAsFactors=FALSE)
+
+names(z) <- list("ID","Mandible.length")
+z <- z[z$Mandible.length>0,]
+str(z)
+summary(z$Mandible.length)
+```  
+
+
+```{r import 3, message = FALSE}
+# Simple Histogram from Provided Code (density option)
+p1 <- ggplot(data=z, aes(x=Mandible.length, y=..density..)) +
+  geom_histogram(color="black",fill="orange",size=0.2, alpha = .8)+
+  theme_dark()
+print(p1)
+```  
+
+```{r import 4, message = FALSE}
+## Empirical density curve added
+p1 <-  p1 +  geom_density(linetype="dotted",size=0.95, color = 'white')
+print(p1)
+```  
+```{r import 5}
+### Fit normal distribution
+normPars <- fitdistr(z$Mandible.length,"normal")
+print(normPars)
+str(normPars)
+normPars$estimate["mean"] # note structure of getting a named attribute
+```  
+
+
+
+```{r import 6, message = FALSE}
+## Plot normal probability density
+meanML <- normPars$estimate["mean"]
+sdML <- normPars$estimate["sd"]
+
+xval <- seq(0,max(z$Mandible.length),len=length(z$Mandible.length))
+
+ stat <- stat_function(aes(x = xval, y = ..y..), fun = dnorm, colour="pink", n = length(z$Mandible.length), args = list(mean = meanML, sd = sdML))
+ p1 + stat
+```  
+
+
+```{r import 7, message = FALSE}
+## Plot exponential probability density
+expoPars <- fitdistr(z$Mandible.length,"exponential")
+rateML <- expoPars$estimate["rate"]
+
+stat2 <- stat_function(aes(x = xval, y = ..y..), fun = dexp, colour="blue", n = length(z$Mandible.length), args = list(rate=rateML))
+ p1 + stat + stat2
+```  
+
+```{r import 8, message = FALSE}
+### Plot uniform probability density
+stat3 <- stat_function(aes(x = xval, y = ..y..), fun = dunif, colour="lightgreen", n = length(z$Mandible.length), args = list(min=min(z$Mandible.length), max=max(z$Mandible.length)))
+ p1 + stat + stat2 + stat3
+```  
+
+
+```{r import 9, message = FALSE}
+### Plot gamma probability density
+gammaPars <- fitdistr(z$Mandible.length,"gamma")
+shapeML <- gammaPars$estimate["shape"]
+rateML <- gammaPars$estimate["rate"]
+
+stat4 <- stat_function(aes(x = xval, y = ..y..), fun = dgamma, colour="brown", n = length(z$Mandible.length), args = list(shape=shapeML, rate=rateML))
+ p1 + stat + stat2 + stat3 + stat4
+```  
+
+```{r import 10, message = FALSE, warning = FALSE}
+## Plot beta probability density
+pSpecial <- ggplot(data=z, aes(x=Mandible.length/(max(Mandible.length + 0.1)), y=..density..)) +
+  geom_histogram(color="black",fill="orange",size=0.2, alpha = .8) + 
+  xlim(c(0,1)) +
+  geom_density(size=0.75,linetype="dotted", color = 'white')+
+  theme_dark()
+
+betaPars <- fitdistr(x=z$Mandible.length/max(z$Mandible.length + 0.1),start=list(shape1=1,shape2=2),"beta")
+shape1ML <- betaPars$estimate["shape1"]
+shape2ML <- betaPars$estimate["shape2"]
+
+statSpecial <- stat_function(aes(x = xval, y = ..y..), fun = dbeta, colour="orchid", n = length(z$Mandible.length), args = list(shape1=shape1ML,shape2=shape2ML))
+pSpecial + statSpecial
+```  
+
+Beta appears to have a very nice fit.
