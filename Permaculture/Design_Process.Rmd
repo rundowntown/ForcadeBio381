@@ -1,0 +1,138 @@
+---
+title: "Permaculture: Design and Planning"
+author: "Daniel Forcade"
+date: "9/21/2021"
+output:  
+  rmdformats::readthedown:
+  self_contained: true
+thumbnails: true
+lightbox: true
+gallery: false
+highlight: tango
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, eval = FALSE, echo = FALSE}
+
+## Packages Used
+library("ggplot2")
+library("dplyr")
+library("gridExtra")
+library("quantreg")
+library("gganimate")
+library("animation")
+library("transformr")
+library("viridis")
+library("tidyverse")
+library("ggsci")
+library("ggpubr")
+library("gganimate")
+library("magick")
+library("ggthemes")
+
+```
+
+# The Design Process
+
+## Design Process Overview
+
+![Design Process Overview](Design_Process_Permaculture.png)  
+
+## 1. Client Interview Sample Questions
+
+![Sample Questions](Client_Design_Question_Sample.png)
+
+## 2. Base Map 
+
+![Base Map List](Base_Map_List.png)
+![Base Map Picture](Base_Map_Picture.png)  
+
+
+## 3.  Site Inventory and Analysis
+
+![Site Inventory List](Site_Inventory_and_Analysis.png)
+
+
+## 4.  Prelimenary Site Analysis
+
+![Prelim Sample 1](Preliminary_Site_Analysis_Sample.png)
+![Prelim Sample 2](Preliminary_Site_Analysis_Sample_2.png)  
+
+## 5.  Goals and Objectives
+
+![G&O List](Goals_and_Objectives.png)  
+
+## 6.  Program Development
+
+![Program Development List](Program_Development.png)  
+
+## 7.  Concept Diagrams  
+
+![Concept Diagram List](Concept_Diagrams.png)
+![Concept Sample](Concept_Diagrams_Sample.png)
+
+## 8.  Schematic Landscape Plans  
+
+![Schematic Plans](Schematic_Landscape_Plans.png)
+![Schematic Plans 1](Schematic_Landscape_Plans_Example.png)
+![Schematic Plans 2](Schematic_Landscape_Plans_Example_2.png)  
+
+#### Student Landscape Plans  
+
+![Student Example 1](Schematic_Landscape_Plans_Example_3_Student.png)
+![Student Example 2](Schematic_Landscape_Plans_Example_4_Student.png)  
+
+## 9 Construction Documents
+
+![Construction Docments](Construction_Documents.png)
+![Construction Document](Construction_For_Comparison.png)
+![Comparison of Plan Stages](Schematic_Landscape_Plans_Example.png)  
+
+# Site Analysis  
+
+## Site Analysis Components 
+
+![Site Analysis List](Site_Analysis_Components.png)
+![Site Analysis Part Two](Site_Analysis_Two.png)
+
+## Analysis Resources  
+
+#### 811  
+![811 Utility Service](811.png)  
+
+#### Sun Patterns
+![Sun Patterns List](Sun_Patterns.png)
+![Suncalc.org Website](Sun_Calc.png)  
+
+#### Soil
+
+![Soil Mapping and Testing](Soil_Mapping.png)
+
+#### Stormwater  
+
+![](Stormwater.png)  
+
+#### Topography
+
+![Topograhy Example](Topography.png)
+
+#### Site Functions
+
+![Site Functions](Site_Function.png)   
+
+
+#### Site History
+
+![Site History](Site_History.png)
+
+#### Sectors
+
+
+![Sectors List](Sectors_List.png)  
+
+![Sectors 1](Sectors.png)
+![Sectors 2](Sectors_2.png)
+

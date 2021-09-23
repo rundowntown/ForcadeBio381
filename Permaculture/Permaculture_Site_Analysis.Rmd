@@ -1,0 +1,80 @@
+---
+title: "Permaculture: Site Analysis"
+author: "Daniel Forcade"
+date: "9/21/2021"
+output:  
+  rmdformats::readthedown:
+  self_contained: true
+thumbnails: true
+lightbox: true
+gallery: false
+highlight: tango
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r packages, eval = FALSE, echo = FALSE}
+
+## Packages Used
+library("ggplot2")
+library("dplyr")
+library("gridExtra")
+library("quantreg")
+library("gganimate")
+library("animation")
+library("transformr")
+library("viridis")
+library("tidyverse")
+library("ggsci")
+library("ggpubr")
+library("gganimate")
+library("magick")
+library("ggthemes")
+
+```
+
+
+
+## Site Analysis Components 
+
+![Site Analysis List](Site_Analysis_Components.png)
+![Site Analysis Part Two](Site_Analysis_Two.png)
+
+
+## 811  
+![811 Utility Service](811.png)  
+
+## Sun Patterns
+![Sun Patterns List](Sun_Patterns.png)
+![Suncalc.org Website](Sun_Calc.png)  
+
+## Soil
+
+![Soil Mapping and Testing](Soil_Mapping.png)
+
+## Stormwater  
+
+![](Stormwater.png)  
+
+## Topography
+
+![Topograhy Example](Topography.png)
+
+## Site Functions
+
+![Site Functions](Site_Function.png)   
+
+
+## Site History
+
+![Site History](Site_History.png)
+
+## Sectors
+
+
+![Sectors List](Sectors_List.png)
+![Sectors 1](Sectors.png)  
+![Sectors 2](Sectors_2.png)
+
